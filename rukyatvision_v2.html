@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RukyatVision v2 by Ika — Model Yallop & Odeh</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:#0d1117;color:#e6edf3;
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;padding:2rem 1rem 3rem;
+}
+h1{font-size:20px;font-weight:500;margin-bottom:2px;color:#e6edf3}
+.brand{font-size:11px;color:#58a6ff;letter-spacing:.06em;margin-bottom:3px;text-align:center;font-weight:500}
+.sub{font-size:12px;color:#8b949e;margin-bottom:1.2rem;text-align:center}
+
+.dbar{
+  display:flex;align-items:center;flex-wrap:wrap;gap:6px;
+  padding:8px 12px;background:#161b22;
+  border:0.5px solid #30363d;border-radius:8px;
+  margin-bottom:12px;width:100%;max-width:720px;
+}
+.badge{display:flex;align-items:center;gap:4px;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500}
+.bok {background:#1a3a1f;color:#56d364;border:0.5px solid #2ea043}
+.bwn {background:#3a2a0f;color:#e3b341;border:0.5px solid #9e6a03}
+.ber {background:#3a1a1a;color:#f85149;border:0.5px solid #da3633}
+.bld {background:#21262d;color:#8b949e;border:0.5px solid #30363d}
+.dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+button#btn-rd{
+  font-size:12px;padding:5px 12px;border:0.5px solid #30363d;
+  border-radius:6px;background:#21262d;color:#e6edf3;cursor:pointer;margin-left:auto;
+}
+button#btn-rd:hover{background:#30363d}
+
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:720px}
+@media(max-width:560px){.panels{grid-template-columns:1fr}}
+
+.card{background:#161b22;border:0.5px solid #30363d;border-radius:12px;padding:1.1rem}
+.clabel{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#8b949e;margin-bottom:10px}
+
+label{display:block;font-size:12px;color:#8b949e;margin-bottom:2px}
+.val{font-size:12px;font-weight:600;color:#58a6ff;float:right}
+input[type=range]{width:100%;margin-bottom:10px;accent-color:#58a6ff;cursor:pointer}
+select{
+  width:100%;font-size:12px;padding:5px 8px;
+  border:0.5px solid #30363d;border-radius:6px;
+  background:#0d1117;color:#e6edf3;margin-bottom:10px;cursor:pointer;
+}
+
+#sw{
+  border-radius:50%;overflow:hidden;width:210px;height:210px;
+  margin:0 auto 10px;border:2px solid #30363d;
+  box-shadow:0 0 20px rgba(88,166,255,0.07);
+}
+canvas#sc{display:block;width:210px;height:210px}
+
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.scard{background:#0d1117;border-radius:7px;padding:7px 9px}
+.sn{font-size:10px;color:#8b949e}
+.sv{font-size:14px;font-weight:500;color:#e6edf3;margin-top:1px}
+
+.ybox{margin-top:8px;padding:9px 12px;border-radius:7px;font-size:12px;text-align:center}
+.yA{background:#1a3a1f;color:#56d364;border:0.5px solid #2ea043;font-weight:700}
+.yB{background:#1a3a1f;color:#56d364;border:0.5px solid #2ea043;font-weight:500}
+.yC{background:#3a2a0f;color:#e3b341;border:0.5px solid #9e6a03;font-weight:500}
+.yD{background:#3a2a0f;color:#e3b341;border:0.5px solid #9e6a03;font-weight:400}
+.yE{background:#3a1a1a;color:#f85149;border:0.5px solid #da3633;font-weight:500}
+.yF{background:#3a1a1a;color:#f85149;border:0.5px solid #da3633;font-weight:400}
+
+.ydesc{
+  margin-top:6px;font-size:11px;color:#8b949e;line-height:1.6;
+  padding:7px 10px;background:#0d1117;border-radius:6px;
+}
+.irow{font-size:11px;color:#8b949e;text-align:center;margin-top:6px;line-height:1.5}
+.locinfo{font-size:11px;color:#6e7681;text-align:center;margin-top:3px}
+
+.kriteria{
+  margin-top:14px;padding:12px 14px;
+  background:#161b22;border:0.5px solid #30363d;
+  border-radius:10px;font-size:12px;color:#8b949e;
+  line-height:1.8;max-width:720px;width:100%;
+}
+.kriteria strong{color:#e6edf3}
+.kriteria table{width:100%;border-collapse:collapse;margin-top:8px;font-size:11px}
+.kriteria td{padding:3px 8px;border-bottom:0.5px solid #21262d}
+.kriteria td:first-child{font-weight:600;width:30px}
+
+.footer{
+  margin-top:18px;font-size:11px;color:#484f58;text-align:center;
+  max-width:720px;width:100%;padding-top:10px;
+  border-top:0.5px solid #21262d;
+}
+
+.spin{display:inline-block;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<h1>🔭 RukyatVision <span style="font-size:13px;color:#8b949e;font-weight:400">v2</span></h1>
+<p class="brand">by Ika</p>
+<p class="sub">Model Yallop &amp; Odeh · Koreksi Parallax Topocentric · Algoritma Chapront</p>
+
+<div class="dbar">
+  <span id="b-gps"  class="badge bld"><span class="dot"></span>GPS</span>
+  <span id="b-time" class="badge bld"><span class="dot"></span>Waktu</span>
+  <span id="b-moon" class="badge bld"><span class="dot"></span>Posisi Bulan</span>
+  <span id="b-atm"  class="badge bld"><span class="dot"></span>Cuaca</span>
+  <button id="btn-rd" onclick="runDetect()">⟳ Deteksi Ulang</button>
+</div>
+
+<div class="panels">
+  <!-- Kiri: Parameter -->
+  <div class="card">
+    <div class="clabel">Parameter Pengamatan</div>
+
+    <label>Umur bulan sejak ijtimak <span class="val" id="v-age">16.0 jam</span></label>
+    <input type="range" id="r-age" min="1" max="72" value="16" step="0.1" oninput="update()">
+
+    <label>Elongasi (topocentric) <span class="val" id="v-elong">8.0°</span></label>
+    <input type="range" id="r-elong" min="0" max="35" value="8" step="0.1" oninput="update()">
+
+    <label>Ketinggian hilal saat maghrib <span class="val" id="v-alt">5.0°</span></label>
+    <input type="range" id="r-alt" min="-5" max="35" value="5" step="0.1" oninput="update()">
+
+    <label>Beda azimuth bulan–matahari <span class="val" id="v-daz">0.0°</span></label>
+    <input type="range" id="r-daz" min="-30" max="30" value="0" step="0.1" oninput="update()">
+
+    <label>Kondisi atmosfer</label>
+    <select id="s-atm" onchange="update()">
+      <option value="clear">Cerah (terbaik)</option>
+      <option value="haze" selected>Berawan ringan</option>
+      <option value="dusty">Berkabut / berdebu</option>
+      <option value="cloudy">Mendung</option>
+    </select>
+
+    <label>Alat bantu</label>
+    <select id="s-tool" onchange="update()">
+      <option value="naked">Mata telanjang</option>
+      <option value="bino" selected>Binokuler / teropong kecil</option>
+      <option value="tele">Teleskop</option>
+    </select>
+
+    <div class="sgrid">
+      <div class="scard"><div class="sn">Lebar sabit (arcmin)</div><div class="sv" id="sv-w">—</div></div>
+      <div class="scard"><div class="sn">Nilai q Yallop</div><div class="sv" id="sv-q">—</div></div>
+      <div class="scard"><div class="sn">Iluminasi</div><div class="sv" id="sv-ill">—</div></div>
+      <div class="scard"><div class="sn">ARCV</div><div class="sv" id="sv-arcv">—</div></div>
+    </div>
+
+    <div id="ybox" class="ybox yD">—</div>
+    <div class="ydesc" id="ydesc"></div>
+    <div class="locinfo" id="locinfo"></div>
+  </div>
+
+  <!-- Kanan: Teropong -->
+  <div class="card" style="display:flex;flex-direction:column;align-items:center">
+    <div class="clabel" style="align-self:flex-start">Tampilan Teropong</div>
+    <div id="sw"><canvas id="sc" width="420" height="420"></canvas></div>
+    <div class="irow" id="irow">Mendeteksi parameter…</div>
+  </div>
+</div>
+
+<!-- Tabel kriteria Yallop -->
+<div class="kriteria">
+  <strong>Kriteria Visibilitas Yallop (q)</strong> — digunakan HMNAO Inggris &amp; lembaga rukyat internasional:
+  <table>
+    <tr><td style="color:#56d364">A</td><td>q ≥ 0.216</td><td>Mudah terlihat mata telanjang</td></tr>
+    <tr><td style="color:#56d364">B</td><td>q ≥ −0.014</td><td>Terlihat mata telanjang, kondisi baik</td></tr>
+    <tr><td style="color:#e3b341">C</td><td>q ≥ −0.160</td><td>Perlu alat optik; bisa konfirmasi mata telanjang</td></tr>
+    <tr><td style="color:#e3b341">D</td><td>q ≥ −0.232</td><td>Hanya dengan binokuler atau teleskop</td></tr>
+    <tr><td style="color:#f85149">E</td><td>q ≥ −0.293</td><td>Tidak terlihat meski dengan teleskop</td></tr>
+    <tr><td style="color:#f85149">F</td><td>q &lt; −0.293</td><td>Di bawah batas absolut visibilitas</td></tr>
+  </table>
+  <div style="margin-top:8px;font-size:11px;">ARCV = Arc of Vision (beda ketinggian bulan−matahari) · W = lebar sabit topocentric · q = (ARCV − f(W)) / 10</div>
+</div>
+
+<div class="footer">
+  © 2026 Ika — RukyatVision v2. Hak cipta dilindungi undang-undang.<br>
+  Algoritma: Chapront (posisi bulan) · Yallop 1997 (visibilitas) · Koreksi parallax topocentric.<br>
+  Data cuaca via Open-Meteo (CC BY 4.0).
+</div>
+
+<script>
+// ── Utilitas ─────────────────────────────────────────────────────────────────
+const R2D=180/Math.PI,D2R=Math.PI/180;
+const rad=d=>d*D2R,deg=r=>r*R2D;
+function jdFromMs(ms){return ms/86400000+2440587.5}
+function mod(x,n){return((x%n)+n)%n}
+
+// ── Posisi Matahari ───────────────────────────────────────────────────────────
+function sunPos(jd){
+  const n=jd-2451545;
+  const L=mod(280.460+0.9856474*n,360);
+  const g=rad(mod(357.528+0.9856003*n,360));
+  const lam=rad(L+1.915*Math.sin(g)+0.020*Math.sin(2*g));
+  const eps=rad(23.439-3.56e-7*n);
+  return{ra:Math.atan2(Math.cos(eps)*Math.sin(lam),Math.cos(lam)),dec:Math.asin(Math.sin(eps)*Math.sin(lam))};
+}
+
+// ── Posisi Bulan — Algoritma Chapront (32 suku) ───────────────────────────────
+function moonPos(jd){
+  const T=(jd-2451545)/36525;
+  const Lp=mod(218.3164477+481267.88123421*T-0.0015786*T*T+T*T*T/538841,360);
+  const D =mod(297.8501921+445267.1114034*T-0.0018819*T*T+T*T*T/545868,360);
+  const M =mod(357.5291092+35999.0502909*T-0.0001536*T*T,360);
+  const Mp=mod(134.9633964+477198.8675055*T+0.0087414*T*T+T*T*T/69699,360);
+  const F =mod(93.2720950+483202.0175233*T-0.0036539*T*T,360);
+
+  const tLon=[
+    [6288774,0,0,1,0],[1274027,2,0,-1,0],[658314,2,0,0,0],[213618,0,0,2,0],
+    [-185116,0,1,0,0],[-114332,0,0,0,2],[58793,2,0,-2,0],[57066,2,-1,-1,0],
+    [53322,2,0,1,0],[45758,2,-1,0,0],[-40923,0,1,-1,0],[-34720,1,0,0,0],
+    [-30383,0,1,1,0],[15327,2,0,0,-2],[-12528,0,0,1,2],[10980,0,0,1,-2],
+    [10675,4,0,-1,0],[10034,0,0,3,0],[8548,4,0,-2,0],[-7888,2,1,-1,0],
+    [-6766,2,1,0,0],[-5163,1,0,-1,0],[4987,1,1,0,0],[4036,2,-1,1,0],
+    [3994,2,0,2,0],[3861,4,0,0,0],[3665,2,0,-3,0],[-2689,0,1,-2,0],
+    [-2602,2,0,-1,2],[-2348,1,0,1,0],[-2120,0,1,2,0],[2048,2,-2,0,0],
+  ];
+  const tLat=[
+    [5128122,0,0,0,1],[-2208894,0,0,1,-1],[1093380,2,0,0,-1],[834148,0,0,0,-1],
+    [579490,0,0,2,1],[-577230,2,0,0,1],[97700,2,0,-1,-1],[-520070,0,0,1,1],
+    [201479,0,0,2,-1],[-76140,2,0,-2,1],[-60370,2,-1,0,-1],[47840,0,1,0,-1],
+    [-39180,2,0,1,1],[-38490,1,0,0,-1],[47840,0,1,0,1],[-30880,2,0,-1,1],
+  ];
+
+  let dLon=0;
+  for(const[c,d,m,mp,f] of tLon){
+    let ec=1;
+    if(Math.abs(m)===1) ec=1-0.002516*T-0.0000074*T*T;
+    if(Math.abs(m)===2) ec=(1-0.002516*T-0.0000074*T*T)**2;
+    dLon+=c*ec*Math.sin(rad(d*D+m*M+mp*Mp+f*F));
+  }
+  let dLat=0;
+  for(const[c,d,m,mp,f] of tLat) dLat+=c*Math.sin(rad(d*D+m*M+mp*Mp+f*F));
+
+  const lon=rad(Lp+dLon/1e6);
+  const lat=rad(dLat/1e6);
+  const eps=rad(23.439-3.56e-7*(jd-2451545));
+  return{
+    ra:Math.atan2(Math.cos(eps)*Math.sin(lon)-Math.tan(lat)*Math.sin(eps),Math.cos(lon)),
+    dec:Math.asin(Math.sin(lat)*Math.cos(eps)+Math.cos(lat)*Math.sin(eps)*Math.sin(lon))
+  };
+}
+
+// ── Koreksi Topocentric Parallax ──────────────────────────────────────────────
+function topoMoon(mRa,mDec,latDeg,lonDeg,jd){
+  const sinPi=Math.sin(rad(0.9507));
+  const L=lst(jd,lonDeg);
+  const H=L-mRa;
+  const rhoSin=0.99664719*Math.sin(rad(latDeg));
+  const rhoCos=0.99664719*Math.cos(rad(latDeg));
+  const dRa=-sinPi*(rhoCos*Math.sin(H))/Math.cos(mDec);
+  const dDec=-sinPi*(rhoSin*Math.cos(mDec)-rhoCos*Math.cos(H)*Math.sin(mDec));
+  return{ra:mRa+dRa,dec:mDec+dDec};
+}
+
+function lst(jd,lonDeg){
+  const T=(jd-2451545)/36525;
+  const th=280.46061837+360.98564736629*(jd-2451545)+0.000387933*T*T;
+  return rad(mod(th+lonDeg,360));
+}
+
+function angSep(ra1,d1,ra2,d2){
+  const x=Math.sin((d2-d1)/2)**2+Math.cos(d1)*Math.cos(d2)*Math.sin((ra2-ra1)/2)**2;
+  return 2*Math.asin(Math.sqrt(Math.min(1,x)));
+}
+
+function altAz(ra,dec,latDeg,lstRad){
+  const H=lstRad-ra;
+  const alt=Math.asin(Math.sin(rad(latDeg))*Math.sin(dec)+Math.cos(rad(latDeg))*Math.cos(dec)*Math.cos(H));
+  const az=Math.atan2(Math.sin(H),Math.cos(H)*Math.sin(rad(latDeg))-Math.tan(dec)*Math.cos(rad(latDeg)));
+  return{alt:deg(alt),az:mod(deg(az)+180,360)};
+}
+
+// ── Sunset ────────────────────────────────────────────────────────────────────
+function sunsetJD(jd0,latDeg,lonDeg){
+  let jdv=jd0+(18-lonDeg/15)/24;
+  for(let i=0;i<30;i++){
+    const s=sunPos(jdv);
+    const cosH=(Math.sin(rad(-0.8333))-Math.sin(rad(latDeg))*Math.sin(s.dec))
+               /(Math.cos(rad(latDeg))*Math.cos(s.dec));
+    if(Math.abs(cosH)>1) break;
+    const jdNew=jd0+(12+deg(Math.acos(cosH))/15-lonDeg/15)/24+0.0208;
+    if(Math.abs(jdNew-jdv)<1e-6) break;
+    jdv=jdNew;
+  }
+  return jdv;
+}
+
+// ── Ijtimak terakhir ──────────────────────────────────────────────────────────
+function lastNewMoon(jdNow){
+  const k=Math.floor((jdNow-2451550.09766)/29.530588853);
+  let jnm=2451550.09766+29.530588853*k;
+  let step=1,minE=999,bestJ=jnm;
+  for(let pass=0;pass<3;pass++){
+    for(let i=-20;i<=20;i++){
+      const jt=jnm+i*step;
+      const s=sunPos(jt),m=moonPos(jt);
+      const e=deg(angSep(s.ra,s.dec,m.ra,m.dec));
+      if(e<minE){minE=e;bestJ=jt;}
+    }
+    jnm=bestJ; step/=20;
+  }
+  return bestJ;
+}
+
+// ── Yallop q ─────────────────────────────────────────────────────────────────
+function crescentWidth(elongDeg){
+  return 0.00520833*(1-Math.cos(rad(elongDeg)))*10800/Math.PI;
+}
+function yallopQ(arcv,wArcmin){
+  const W=wArcmin;
+  const need=11.8371-6.3226*W+7.1651*W*W-0.7307*W*W*W;
+  return(arcv-need)/10;
+}
+const YALLOP=[
+  {cls:'yA',label:'A — Mudah terlihat mata telanjang',desc:'Hilal sangat mudah. Dapat dilihat bahkan sebelum matahari terbenam penuh.',min:0.216},
+  {cls:'yB',label:'B — Terlihat mata telanjang (kondisi baik)',desc:'Hilal terlihat jelas. Pengamat berpengalaman dapat menemukannya tanpa alat bantu.',min:-0.014},
+  {cls:'yC',label:'C — Perlu optical aid, bisa konfirmasi',desc:'Hilal tipis. Binokuler sangat membantu. Setelah ditemukan, mungkin bisa dikonfirmasi mata telanjang.',min:-0.160},
+  {cls:'yD',label:'D — Hanya dengan binokuler / teleskop',desc:'Hilal sangat tipis. Hanya bisa diamati dengan binokuler atau teleskop oleh pengamat terlatih.',min:-0.232},
+  {cls:'yE',label:'E — Tidak terlihat meski dengan teleskop',desc:'Hilal di bawah batas kemampuan teleskop pada kondisi ini. Tidak disarankan rukyat.',min:-0.293},
+  {cls:'yF',label:'F — Di bawah batas absolut visibilitas',desc:'Hilal tidak ada di atas ufuk atau di bawah batas absolut. Rukyat tidak mungkin.',min:-Infinity},
+];
+function yallopClass(q){
+  for(const y of YALLOP) if(q>=y.min) return y;
+  return YALLOP[YALLOP.length-1];
+}
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let lat=-5.147,lon=119.432;
+
+function badge(id,cls,text){
+  const el=document.getElementById(id);
+  el.className='badge '+cls;
+  el.innerHTML='<span class="dot"></span>'+text;
+}
+
+async function runDetect(){
+  ['b-gps','b-time','b-moon','b-atm'].forEach(id=>badge(id,'bld','<span class="spin">⟳</span>'));
+
+  const now=new Date();
+  badge('b-time','bok','✓ '+now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}));
+
+  try{
+    const pos=await new Promise((res,rej)=>navigator.geolocation.getCurrentPosition(res,rej,{timeout:8000}));
+    lat=pos.coords.latitude; lon=pos.coords.longitude;
+    badge('b-gps','bok',`✓ ${lat.toFixed(2)}°, ${lon.toFixed(2)}°`);
+    document.getElementById('locinfo').textContent=`Lat ${lat.toFixed(4)}° · Lon ${lon.toFixed(4)}°`;
+  }catch(e){
+    badge('b-gps','bwn','⚠ Fallback Makassar');
+    document.getElementById('locinfo').textContent='Lokasi default: Makassar (-5.147°, 119.432°)';
+  }
+
+  try{
+    const jdNow=jdFromMs(now.getTime());
+    const jdSS=sunsetJD(Math.floor(jdNow)-0.5,lat,lon);
+    const L=lst(jdSS,lon);
+    const sun=sunPos(jdSS);
+    const moonGeo=moonPos(jdSS);
+    const moonTopo=topoMoon(moonGeo.ra,moonGeo.dec,lat,lon,jdSS);
+    const elongDeg=deg(angSep(sun.ra,sun.dec,moonTopo.ra,moonTopo.dec));
+    const moonAA=altAz(moonTopo.ra,moonTopo.dec,lat,L);
+    const sunAA=altAz(sun.ra,sun.dec,lat,L);
+    const daz=moonAA.az-sunAA.az;
+    const jdNM=lastNewMoon(jdNow);
+    const ageH=(jdNow-jdNM)*24;
+
+    document.getElementById('r-elong').value=Math.max(0,Math.min(35,elongDeg)).toFixed(1);
+    document.getElementById('r-alt').value=Math.max(-5,Math.min(35,moonAA.alt)).toFixed(1);
+    document.getElementById('r-age').value=Math.max(1,Math.min(72,ageH)).toFixed(1);
+    document.getElementById('r-daz').value=Math.max(-30,Math.min(30,daz)).toFixed(1);
+    badge('b-moon','bok',`✓ Elong ${elongDeg.toFixed(1)}° · Alt ${moonAA.alt.toFixed(1)}°`);
+  }catch(e){
+    badge('b-moon','ber','✗ Gagal hitung posisi bulan');
+  }
+
+  try{
+    const url=`https://api.open-meteo.com/v1/forecast?latitude=${lat.toFixed(4)}&longitude=${lon.toFixed(4)}&current=cloud_cover,visibility,weather_code`;
+    const r=await fetch(url);
+    const d=await r.json();
+    const cc=d.current.cloud_cover,vis=d.current.visibility,wc=d.current.weather_code;
+    let atm;
+    if(cc>=70||(wc>=61&&wc<=99)) atm='cloudy';
+    else if(cc>=40||vis<5000)    atm='dusty';
+    else if(cc>=15||vis<15000)   atm='haze';
+    else                          atm='clear';
+    document.getElementById('s-atm').value=atm;
+    const lbl={clear:'Cerah ☀',haze:'Berawan ⛅',dusty:'Kabut 🌫',cloudy:'Mendung ☁'};
+    badge('b-atm','bok',`✓ ${lbl[atm]} (awan ${cc}%)`);
+  }catch(e){
+    badge('b-atm','bwn','⚠ Cuaca tidak tersedia');
+  }
+
+  update();
+}
+
+// ── Canvas ────────────────────────────────────────────────────────────────────
+const cnv=document.getElementById('sc');
+const ctx=cnv.getContext('2d');
+const CW=420,CH=420,CX=210,CY=210,CR=196;
+
+function update(){
+  const age=+document.getElementById('r-age').value;
+  const elong=+document.getElementById('r-elong').value;
+  const alt=+document.getElementById('r-alt').value;
+  const daz=+document.getElementById('r-daz').value;
+  const atm=document.getElementById('s-atm').value;
+  const tool=document.getElementById('s-tool').value;
+
+  document.getElementById('v-age').textContent=(+age).toFixed(1)+' jam';
+  document.getElementById('v-elong').textContent=(+elong).toFixed(1)+'°';
+  document.getElementById('v-alt').textContent=(+alt).toFixed(1)+'°';
+  document.getElementById('v-daz').textContent=(+daz).toFixed(1)+'°';
+
+  const phase=(1-Math.cos(rad(elong)))/2;
+  const wArcmin=crescentWidth(elong);
+  const illum=(phase*100).toFixed(1);
+  const arcv=alt+0.833;
+
+  document.getElementById('sv-w').textContent=wArcmin.toFixed(2)+'"';
+  document.getElementById('sv-ill').textContent=illum+'%';
+  document.getElementById('sv-arcv').textContent=arcv.toFixed(2)+'°';
+
+  const q=yallopQ(arcv,wArcmin);
+  document.getElementById('sv-q').textContent=q.toFixed(3);
+
+  let qAdj=q;
+  const aP={clear:0,haze:-0.05,dusty:-0.12,cloudy:-1};
+  const tB={naked:0,bino:0.08,tele:0.14};
+  qAdj+=aP[atm]+(tB[tool]||0);
+  if(atm==='cloudy'||alt<0) qAdj=-1;
+
+  const yc=yallopClass(qAdj);
+  document.getElementById('ybox').className='ybox '+yc.cls;
+  document.getElementById('ybox').textContent=yc.label;
+  document.getElementById('ydesc').textContent=
+    `q=${q.toFixed(3)} · W=${wArcmin.toFixed(2)}" · ARCV=${arcv.toFixed(2)}° — ${yc.desc}`;
+  document.getElementById('irow').textContent=
+    `Topocentric elong ${(+elong).toFixed(1)}° · Fase ${illum}% · Sabit ${wArcmin.toFixed(2)}"`;
+
+  drawScope(phase,elong,alt,daz,atm,qAdj);
+}
+
+function drawScope(phase,elong,alt,daz,atm,qAdj){
+  ctx.clearRect(0,0,CW,CH);
+  ctx.save();
+  ctx.beginPath(); ctx.arc(CX,CY,CR,0,Math.PI*2); ctx.clip();
+
+  const skyC={clear:'#07101c',haze:'#10181f',dusty:'#18140c',cloudy:'#111'};
+  const g=ctx.createRadialGradient(CX,CY,0,CX,CY,CR);
+  g.addColorStop(0,skyC[atm]); g.addColorStop(1,'#020507');
+  ctx.fillStyle=g; ctx.fillRect(0,0,CW,CH);
+
+  if(atm!=='cloudy'){
+    const hz=ctx.createLinearGradient(0,CH*0.55,0,CH);
+    hz.addColorStop(0,'rgba(255,140,30,0.1)');
+    hz.addColorStop(1,'rgba(255,100,10,0.25)');
+    ctx.fillStyle=hz; ctx.fillRect(0,0,CW,CH);
+  }
+  if(atm==='haze'||atm==='dusty'){
+    const hh=ctx.createLinearGradient(0,CH*0.6,0,CH);
+    hh.addColorStop(0,'rgba(0,0,0,0)');
+    hh.addColorStop(1,atm==='dusty'?'rgba(80,60,10,0.5)':'rgba(20,45,65,0.35)');
+    ctx.fillStyle=hh; ctx.fillRect(0,0,CW,CH);
+  }
+  if(atm==='cloudy'){
+    for(let c=0;c<6;c++){
+      ctx.beginPath(); ctx.ellipse(40+c*65,80+(c%2)*50,60,34,0,0,Math.PI*2);
+      ctx.fillStyle='rgba(40,42,50,0.8)'; ctx.fill();
+    }
+  }
+  if(atm!=='cloudy'){
+    const sc=atm==='clear'?65:atm==='haze'?30:12;
+    const rn=s=>{let x=Math.sin(s+1)*1e4;return x-Math.floor(x);};
+    for(let i=0;i<sc;i++){
+      ctx.beginPath(); ctx.arc(rn(i*3.1)*CW,rn(i*7.3)*CH*0.7,rn(i*2.7)*1.2+0.2,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${0.3+rn(i)*0.7})`; ctx.fill();
+    }
+  }
+
+  const mX=CX-10+Math.min(elong,20)*2.4+daz*2;
+  const mY=CY+60-Math.max(alt,0)*9;
+  const visible=qAdj>-0.293&&atm!=='cloudy'&&alt>0;
+
+  if(visible){
+    const mR=20+Math.min(elong,16)*0.9;
+    const op=Math.min(1,Math.max(0.05,(qAdj+0.293)/0.51));
+    ctx.save(); ctx.globalAlpha=op;
+    const gl=ctx.createRadialGradient(mX,mY,mR*0.3,mX,mY,mR*2.8);
+    gl.addColorStop(0,'rgba(255,240,190,0.3)');
+    gl.addColorStop(1,'rgba(255,240,190,0)');
+    ctx.fillStyle=gl; ctx.beginPath(); ctx.arc(mX,mY,mR*3,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(mX,mY,mR,0,Math.PI*2);
+    ctx.fillStyle='#d6ca96'; ctx.fill();
+    const off=mR*(1-phase*2.6);
+    ctx.beginPath(); ctx.arc(mX+off*0.88,mY,mR*0.93,0,Math.PI*2);
+    ctx.fillStyle=skyC[atm]; ctx.fill();
+    ctx.restore();
+  }
+
+  ctx.strokeStyle='rgba(255,255,255,0.12)';
+  ctx.lineWidth=0.5; ctx.setLineDash([4,8]);
+  ctx.beginPath(); ctx.moveTo(CX,CY-CR); ctx.lineTo(CX,CY+CR); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(CX-CR,CY); ctx.lineTo(CX+CR,CY); ctx.stroke();
+  ctx.setLineDash([]);
+  [0.33,0.66].forEach(r=>{ctx.beginPath();ctx.arc(CX,CY,CR*r,0,Math.PI*2);ctx.stroke();});
+
+  ctx.restore();
+  ctx.beginPath(); ctx.arc(CX,CY,CR,0,Math.PI*2);
+  ctx.strokeStyle='rgba(88,166,255,0.2)'; ctx.lineWidth=1.5; ctx.stroke();
+
+  ctx.fillStyle='rgba(255,255,255,0.28)';
+  ctx.font='11px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('B',CX,16); ctx.fillText('T',CX,CH-6);
+  ctx.textAlign='right'; ctx.fillText('U',18,CY+4);
+  ctx.textAlign='left';  ctx.fillText('S',CW-12,CY+4);
+}
+
+runDetect();
+</script>
+</body>
+</html>
