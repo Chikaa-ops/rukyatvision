@@ -42,7 +42,7 @@ Dibangun menggunakan algoritma astronomi ilmiah yang sama dengan yang digunakan 
 6. Baca hasil prediksi visibilitas hilal (kelas A–F)
 
 ### Cara 2 — GitHub Pages (Online)
-Akses langsung di: `https://[username].github.io/rukyatvision`  
+Akses langsung di: `https://chikaa-ops.github.io/rukyatvision/`  
 *(Tidak perlu install apapun)*
 
 ---
